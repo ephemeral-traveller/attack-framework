@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>XSS Attack Test</title>
+    <link rel="stylesheet" href="/common.css">
+    <script src="/common.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <header class="page-header">
+        <h1>XSS Attack Autofill Test</h1>
+        <p class="page-description"><em>This page simulates XSS attack to test password manager
+            autofill behavior when form submission targets a different domain.</em></p>
+    </header>
+
+    <!-- vulnerable search form that reflects input without sanitization -->
+    <div class="vulnerable-form">
+        <h2>Search Form</h2>
+
+        <!-- form that reflects user input in an unsafe manner -->
+        <form id="xssTestForm" method="GET">
+            <!-- visible username field -->
+            <label for="searchQuery">Search Query:</label>
+            <input class="visible-field" type="text" id="searchQuery" name="q" autocomplete="username"
+                   placeholder="Enter search query (simulated username)">
+
+            <!-- visible password field disguised as search term -->
+            <label for="secureTerm">Secure Search Term:</label>
+            <input class="visible-field" type="password" id="secureTerm" name="st" autocomplete="current-password"
+                   placeholder="Enter secure term (simulated password)">
+
+            <input type="hidden" name="vulnerable" value="true">
+
+            <button type="submit" class="submit-btn">Search</button>
+            <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+        </form>
+    </div>
+
+    <!-- section where form input is reflected (simulating XSS vulnerability) -->
+    <div id="reflectionArea" class="test-results">
+        <h3>Reflected Input (XSS Simulation)</h3>
+        <div id="reflectionContent">
+            <!-- content dynamically inserted by JS -->
+        </div>
+    </div>
+
+    <!-- test results for autofill detection -->
+    <div class="test-results" id="testResults" style="display: none; margin-top: 30px;">
+        <h3>Test Results</h3>
+        <div id="resultsContent">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // initialize page
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('XSS attack simulation test page loaded.');
+
+        // check URL parameters for reflected input
+        const urlParams = new URLSearchParams(window.location.search);
+        const searchQuery = urlParams.get('q');
+        const secureTerm = urlParams.get('st');
+
+        if (searchQuery || secureTerm) {
+            // simulate XSS vulnerability by reflecting input without sanitization
+            reflectInputs(searchQuery, secureTerm);
+
+            runAutofillTest(searchQuery, secureTerm);
+        }
+    });
+
+    // intercept form submission
+    document.getElementById('xssTestForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const searchQuery = document.getElementById('searchQuery').value;
+        const secureTerm = document.getElementById('secureTerm').value;
+
+        // reflect inputs in URL and page
+        const newUrl = new URL(window.location);
+        newUrl.searchParams.set('q', searchQuery);
+        newUrl.searchParams.set('st', secureTerm);
+
+        // update URL without full page reload (simulating typical form behavior)
+        window.history.pushState({}, '', newUrl);
+
+        // reflect the inputs in the page (simulating XSS vulnerability)
+        reflectInputs(searchQuery, secureTerm);
+
+        // run autofill detection test
+        runAutofillTest(searchQuery, secureTerm);
+
+        console.log('XSS test form submitted:', { searchQuery, secureTerm });
+    });
+
+    // function to reflect user inputs (simulating XSS vulnerability)
+    function reflectInputs(searchQuery, secureTerm) {
+        const reflectionContent = document.getElementById('reflectionContent');
+        let reflectionHtml = '<h4>Your Search Results:</h4>';
+
+        if (searchQuery) {
+            // dangerously reflect the search query without sanitization
+            reflectionHtml += `<p><strong>Search Query:</strong> ${searchQuery}</p>`;
+        }
+
+        if (secureTerm) {
+            // in a real XSS attack, the password might be reflected or sent elsewhere
+            reflectionHtml += `<p><strong>Secure Term Detected:</strong> ${secureTerm}</p>`;
+        }
+
+        if (!searchQuery && !secureTerm) {
+            reflectionHtml += '<p>No search terms provided.</p>';
+        }
+
+        reflectionContent.innerHTML = reflectionHtml;
+    }
+
+    // function to run autofill detection test
+    function runAutofillTest(searchQuery, secureTerm) {
+        const searchQueryFilled = searchQuery && searchQuery.trim() !== '';
+        const secureTermFilled = secureTerm && secureTerm.trim() !== '';
+        const anyFieldFilled = searchQueryFilled || secureTermFilled;
+
+        const capturedData = {
+            searchQuery: searchQueryFilled,
+            secureTerm: secureTermFilled,
+        };
+
+        let resultMessage;
+        let resultColor;
+
+        if (anyFieldFilled) {
+            resultMessage = `
+                <h4 style="color: crimson;">⚠️ XSS ATTACK AUTOFILL DETECTED</h4>
+                <p>Your data was entered into a form that reflects input unsafely!</p>
+                <details open>
+                    <summary>Simulated Data Capture</summary>
+                    <pre class="data-display">${JSON.stringify(capturedData, null, 2)}</pre>
+                </details>
+            `;
+            resultColor = 'mistyrose';
+        } else {
+            resultMessage = `
+                <h4 style="color: forestgreen;">✓ NO XSS ATTACK AUTOFILL DETECTED</h4>
+                <p>No credentials were entered into the vulnerable form.</p>
+                <p>No data was found in the XSS fields. Your password manager appears to have correctly ignored them.</p>
+            `;
+            resultColor = 'honeydew';
+        }
+
+        // display test results
+        displayTestResults('testResults', 'Test Results: XSS Attack Autofill Detection', resultMessage, resultColor);
+
+        // console logging for testing
+        console.log('XSS attack test results:', {
+            searchQueryFilled,
+            secureTermFilled,
+            capturedData,
+            testType: 'XSS Attack Simulation',
+            timestamp: new Date().toISOString()
+        });
+    }
+</script>
+</body>
+</html>

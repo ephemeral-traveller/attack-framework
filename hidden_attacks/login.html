@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Form - Hidden Field Test</title>
+    <link rel="stylesheet" href="/common.css">
+    <script src="/common.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <header class="page-header">
+        <h1>Login Form</h1>
+        <p class="page-description"><em>This page contains a login form with hidden fields
+            using various techniques to test password manager autofill behavior.</em></p>
+    </header>
+
+    <form id="loginTestForm" method="POST">
+        <!-- normal fields -->
+        <label for="username">Username / Email:</label>
+        <input class="visible-field" type="text" id="username" name="username" autocomplete="username"
+               placeholder="Enter your username">
+
+        <label for="password">Password (Visible):</label>
+        <input class="visible-field" type="password" id="password" name="password" autocomplete="current-password"
+               placeholder="Your visible password">
+
+        <!-- hidden password fields -->
+
+        <h3>Hidden Password Fields</h3>
+
+        <!-- technique 1: display: none -->
+        <label for="pwd-hidden-display">Password (display:none):</label>
+        <div class="tech-description">CSS: display: none;</div>
+        <input type="password" id="pwd-hidden-display" name="pwd_display" autocomplete="off" style="display: none;">
+
+        <!-- technique 2: visibility: hidden -->
+        <label for="pwd-hidden-visibility" style="visibility: hidden;">Password (visibility:hidden):</label>
+        <div class="tech-description">CSS: visibility: hidden;</div>
+        <input type="password" id="pwd-hidden-visibility" name="pwd_visibility" autocomplete="off"
+               style="visibility: hidden;">
+
+        <!-- technique 3: visibility: collapse -->
+        <label for="pwd-hidden-collapse">Password (visibility:collapse):</label>
+        <div class="tech-description">CSS: visibility: collapse;</div>
+        <input type="password" id="pwd-hidden-collapse" name="pwd_collapse" autocomplete="off"
+               style="visibility: collapse;">
+
+        <!-- technique 4: HTML hidden attribute -->
+        <label for="pwd-hidden-attr" hidden>Password (HTML hidden):</label>
+        <div class="tech-description">Attribute: hidden</div>
+        <input type="password" id="pwd-hidden-attr" name="pwd_hidden" autocomplete="off" hidden>
+
+        <!-- technique 5: opacity: 0 -->
+        <label for="pwd-hidden-opacity">Password (opacity:0):</label>
+        <div class="tech-description">CSS: opacity: 0;</div>
+        <input type="password" id="pwd-hidden-opacity" name="pwd_opacity" autocomplete="off"
+               style="opacity: 0; width: 250px; padding: 8px;">
+
+        <!-- technique 6: covered by overlay -->
+        <div style="position: relative; margin-top: 20px;">
+            <label for="pwd-hidden-overlay">Password (Covered by overlay):</label>
+            <div class="tech-description">Div overlay positioned absolutely on top</div>
+            <input type="password" id="pwd-hidden-overlay" name="pwd_overlay" autocomplete="off"
+                   style="width: 250px; padding: 8px;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 999;"></div>
+        </div>
+
+        <!-- technique 7: off-screen -->
+        <label for="pwd-hidden-offscreen">Password (Off-screen):</label>
+        <div class="tech-description">CSS: position: absolute; left: -9999px;</div>
+        <input type="password" id="pwd-hidden-offscreen" name="pwd_offscreen" autocomplete="off"
+               style="position: absolute; left: -9999px;">
+
+        <!-- technique 8: ancestor element overflow: hidden -->
+        <div style="width: 0; height: 0; overflow: hidden; margin-top: 20px;">
+            <label for="pwd-hidden-ancestor-overflow">Password (Ancestor overflow):</label>
+            <div class="tech-description">Parent div with width:0; height:0; overflow:hidden</div>
+            <input type="password" id="pwd-hidden-ancestor-overflow" name="pwd_ancestor_overflow" autocomplete="off">
+        </div>
+
+        <!-- technique 9: CSS clip (legacy) -->
+        <label for="pwd-hidden-clip">Password (CSS clip):</label>
+        <div class="tech-description">CSS: clip: rect(0, 0, 0, 0);</div>
+        <input type="password" id="pwd-hidden-clip" name="pwd_clip" autocomplete="off"
+               style="position: absolute; clip: rect(0, 0, 0, 0);">
+
+        <!-- technique 10: CSS clip-path -->
+        <label for="pwd-hidden-clip-path">Password (CSS clip-path):</label>
+        <div class="tech-description">CSS: clip-path: inset(100%);</div>
+        <input type="password" id="pwd-hidden-clip-path" name="pwd_clip_path" autocomplete="off"
+               class="hidden-clip-path">
+
+        <!-- technique 11 transform: scale(0) -->
+        <label for="pwd-hidden-transform">Password (transform:scale(0)):</label>
+        <div class="tech-description">CSS: transform: scale(0);</div>
+        <input type="password" id="pwd-hidden-transform" name="pwd_transform" autocomplete="off"
+               style="transform: scale(0);">
+
+        <!-- technique 12: font-size: 0 -->
+        <label for="pwd-hidden-fontsize">Password (font-size:0):</label>
+        <div class="tech-description">CSS: font-size: 0; width/height: 0;</div>
+        <input type="password" id="pwd-hidden-fontsize" name="pwd_fontsize" autocomplete="off"
+               style="font-size: 0; width: 0; height: 0; border: none; padding: 0;">
+
+        <!-- technique 13: content-visibility -->
+        <label for="pwd-hidden-content-vis">Password (content-visibility):</label>
+        <div class="tech-description">CSS: content-visibility: hidden;</div>
+        <input type="password" id="pwd-hidden-content-vis" name="pwd_content_vis" autocomplete="off"
+               class="hidden-content-visibility" style="border: none;">
+
+        <!-- technique 14: non effective size: width/height 0 -->
+        <label for="pwd-hidden-noneffective">Password (Non-effective size):</label>
+        <div class="tech-description">CSS: width: 0; height: 0;</div>
+        <input type="password" id="pwd-hidden-noneffective" name="pwd_noneffective" autocomplete="off"
+               style="width: 0; height: 0; border: none; padding: 0;">
+
+        <!-- technique 15: tiny size: 1px -->
+        <label for="pwd-hidden-tiny">Password (Tiny size 1px):</label>
+        <div class="tech-description">CSS: width: 1px; height: 1px;</div>
+        <input type="password" id="pwd-hidden-tiny" name="pwd_tiny" autocomplete="off"
+               style="width: 1px; height: 1px; opacity: 0.01;">
+
+        <!-- technique 16: z-index (behind overlay) -->
+        <label for="pwd-hidden-zindex">Password (z-index behind):</label>
+        <div class="tech-description">Positioned absolutely with negative z-index behind a solid div.</div>
+        <div style="position: absolute; top: 0; left: 0; width: 250px; height: 40px; background: white; z-index: 1;"></div>
+        <input type="password" id="pwd-hidden-zindex" name="pwd_zindex" autocomplete="off"
+               style="position: absolute; top: 0; left: 0; width: 250px; padding: 8px; z-index: -1;">
+
+        <!-- technique 17: pointer-events: none -->
+        <label for="pwd-hidden-pointerevents">Password (pointer-events:none):</label>
+        <div class="tech-description">CSS: pointer-events: none; opacity: 0;</div>
+        <input type="password" id="pwd-hidden-pointerevents" name="pwd_pointerevents" autocomplete="off"
+               style="pointer-events: none; opacity: 0; width: 250px; padding: 8px;">
+
+        <!-- technique 18: transform: translateZ / backface-visibility -->
+        <label for="pwd-hidden-backface">Password (backface/transform):</label>
+        <div class="tech-description">CSS: backface-visibility: hidden; transform: rotateY(180deg);</div>
+        <input type="password" id="pwd-hidden-backface" name="pwd_backface" autocomplete="off"
+               style="backface-visibility: hidden; transform: rotateY(180deg); width: 250px; padding: 8px;">
+
+        <!-- technique 19: Contained in a hidden template -->
+        <label>Password (Inside &lt;template&gt;):</label>
+        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>
+        <template id="hiddenTemplate">
+            <input type="password" id="pwd-hidden-template" name="pwd_template" autocomplete="off" value="">
+        </template>
+
+        <br>
+
+        <button type="submit" class="submit-btn">Login</button>
+        <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+
+        <div class="test-results" id="testResults" style="display: none;">
+            <h3>Test Results</h3>
+            <div id="resultsContent">
+            </div>
+        </div>
+
+    </form>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('Login form autofill test page loaded.');
+    });
+
+    document.getElementById('loginTestForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // inject hidden template element
+        if (document.getElementById('pwd-hidden-template') === null) {
+            const activatedTemplateInput = activateTemplateField('loginTestForm');
+            // copy the value from the visible password field into it
+            const visiblePasswordValue = document.getElementById('password').value;
+            if (visiblePasswordValue) {
+                activatedTemplateInput.value = visiblePasswordValue;
+            }
+        }
+
+        // collect hidden values
+        const hiddenInputs = document.querySelectorAll('input[type="password"]');
+        const capturedData = {};
+        let filledCount = 0;
+
+        hiddenInputs.forEach(input => {
+            if (input.id !== 'password' && input.value && input.value.trim() !== '') {
+                capturedData[input.name] = input.value;
+                filledCount++;
+            }
+        });
+
+        // show test results
+        let resultMessage, resultColor;
+        if (filledCount > 0) {
+            resultMessage = `
+                <h4 style="color: crimson;">⚠️ HIDDEN FIELD AUTOFILL DETECTED</h4>
+                <p><strong>${filledCount} hidden password fields were filled!</strong></p>
+                <details open>
+                    <summary>Simulated Data Capture</summary>
+                    <pre class="data-display">${JSON.stringify(capturedData, null, 2)}</pre>
+                </details>
+            `;
+            resultColor = 'mistyrose';
+        } else {
+            resultMessage = `
+                <h4 style="color: forestgreen;">✓ NO HIDDEN FIELD AUTOFILL DETECTED</h4>
+                <p>No data was found in the hidden password fields. Your password manager appears to have correctly ignored them.</p>
+            `;
+            resultColor = 'honeydew';
+        }
+
+        displayTestResults('testResults', 'Test Results: Hidden Password Field Autofill Detection', resultMessage, resultColor);
+
+        console.log('Hidden Password Field Test Results:', {
+            filledCount,
+            capturedData: capturedData,
+            totalHiddenFields: hiddenInputs.length - 1, // cut normal field
+            testType: 'Hidden Field Autofill',
+            timestamp: new Date().toISOString()
+        });
+    });
+</script>
+</body>
+</html>

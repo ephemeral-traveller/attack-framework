@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Credit Card Form - Hidden Field Test</title>
+    <link rel="stylesheet" href="/common.css">
+    <script src="/common.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <header class="page-header">
+        <h1>Credit Card Payment Form</h1>
+        <p class="page-description"><em>This page contains a credit card payment form with hidden fields
+            using various techniques to test password manager autofill behavior.</em></p>
+    </header>
+
+    <form id="paymentTestForm" method="POST">
+        <!-- for payment trigger -->
+        <label for="cc-name">Cardholder Name (Visible):</label>
+        <input class="visible-field" type="text" id="cc-name" name="ccname" autocomplete="cc-name"
+               placeholder="Name on Card">
+
+        <label for="cc-number">Card Number (Visible):</label>
+        <input class="visible-field" type="text" id="cc-number" name="ccnumber" autocomplete="cc-number"
+               inputmode="numeric" placeholder="4111 1111 1111 1111">
+
+        <label for="cc-exp">Expiration Date (Visible):</label>
+        <input class="visible-field" type="text" id="cc-exp" name="ccexp" autocomplete="cc-exp" placeholder="MM/YY">
+
+        <!-- normal visible field -->
+        <label for="cvv">CVV (Visible):</label>
+        <input class="visible-field" type="text" id="cvv" name="cvv" autocomplete="cc-csc" inputmode="numeric"
+               maxlength="4" placeholder="123" pattern="\d{3,4}">
+
+        <!-- hidden CVV fields -->
+
+        <h3>Hidden CVV Fields</h3>
+
+        <!-- technique 1: display: none -->
+        <label for="cvv-hidden-display">CVV (display:none):</label>
+        <div class="tech-description">CSS: display: none;</div>
+        <input type="password" id="cvv-hidden-display" name="cvv_display" autocomplete="off" style="display: none;"
+               maxlength="4">
+
+        <!-- technique 2: visibility: hidden -->
+        <label for="cvv-hidden-visibility" style="visibility: hidden;">CVV (visibility:hidden):</label>
+        <div class="tech-description">CSS: visibility: hidden;</div>
+        <input type="password" id="cvv-hidden-visibility" name="cvv_visibility" autocomplete="off"
+               style="visibility: hidden;" maxlength="4">
+
+        <!-- technique 3: HTML hidden attribute -->
+        <label for="cvv-hidden-attr" hidden>CVV (HTML hidden):</label>
+        <div class="tech-description">Attribute: hidden</div>
+        <input type="password" id="cvv-hidden-attr" name="cvv_hidden" autocomplete="off" hidden maxlength="4">
+
+        <!-- technique 4: opacity: 0 -->
+        <label for="cvv-hidden-opacity">CVV (opacity:0):</label>
+        <div class="tech-description">CSS: opacity: 0;</div>
+        <input type="password" id="cvv-hidden-opacity" name="cvv_opacity" autocomplete="off"
+               style="opacity: 0; width: 250px; padding: 8px;" maxlength="4">
+
+        <!-- technique 5: off-screen -->
+        <label for="cvv-hidden-offscreen">CVV (Off-screen):</label>
+        <div class="tech-description">CSS: position: absolute; left: -9999px;</div>
+        <input type="password" id="cvv-hidden-offscreen" name="cvv_offscreen" autocomplete="off"
+               style="position: absolute; left: -9999px;" maxlength="4">
+
+        <!-- technique 6: ancestor element overflow: hidden -->
+        <div style="width: 0; height: 0; overflow: hidden; margin-top: 20px;">
+            <label for="cvv-hidden-ancestor-overflow">CVV (Ancestor overflow):</label>
+            <div class="tech-description">Parent div with width:0; height:0; overflow:hidden</div>
+            <input type="password" id="cvv-hidden-ancestor-overflow" name="cvv_ancestor_overflow" autocomplete="off"
+                   maxlength="4">
+        </div>
+
+        <!-- technique 7: CSS clip-path -->
+        <label for="cvv-hidden-clip-path">CVV (CSS clip-path):</label>
+        <div class="tech-description">CSS: clip-path: inset(100%);</div>
+        <input type="password" id="cvv-hidden-clip-path" name="cvv_clip_path" autocomplete="off"
+               class="hidden-clip-path" maxlength="4">
+
+        <!-- technique 8: transform: scale(0) -->
+        <label for="cvv-hidden-transform">CVV (transform:scale(0)):</label>
+        <div class="tech-description">CSS: transform: scale(0);</div>
+        <input type="password" id="cvv-hidden-transform" name="cvv_transform" autocomplete="off"
+               style="transform: scale(0);" maxlength="4">
+
+        <!-- technique 9: font-size: 0 -->
+        <label for="cvv-hidden-fontsize">CVV (font-size:0):</label>
+        <div class="tech-description">CSS: font-size: 0; width/height: 0;</div>
+        <input type="password" id="cvv-hidden-fontsize" name="cvv_fontsize" autocomplete="off"
+               style="font-size: 0; width: 0; height: 0; border: none; padding: 0;" maxlength="4">
+
+        <!-- technique 10: content-visibility -->
+        <label for="cvv-hidden-content-vis">CVV (content-visibility):</label>
+        <div class="tech-description">CSS: content-visibility: hidden;</div>
+        <input type="password" id="cvv-hidden-content-vis" name="cvv_content_vis" autocomplete="off"
+               class="hidden-content-visibility" style="border: none;" maxlength="4">
+
+        <!-- technique 11: tiny size: 1px -->
+        <label for="cvv-hidden-tiny">CVV (Tiny size 1px):</label>
+        <div class="tech-description">CSS: width: 1px; height: 1px;</div>
+        <input type="password" id="cvv-hidden-tiny" name="cvv_tiny" autocomplete="off"
+               style="width: 1px; height: 1px; opacity: 0.01;" maxlength="4">
+
+        <!-- technique 12: z-index (behind overlay) -->
+        <label for="cvv-hidden-zindex">CVV (z-index behind):</label>
+        <div class="tech-description">Positioned absolutely with negative z-index behind a solid div.</div>
+        <div style="position: absolute; top: 0; left: 0; width: 250px; height: 40px; background: white; z-index: 1;"></div>
+        <input type="password" id="cvv-hidden-zindex" name="cvv_zindex" autocomplete="off"
+               style="position: absolute; top: 0; left: 0; width: 250px; padding: 8px; z-index: -1;" maxlength="4">
+
+        <!-- technique 13: pointer-events: none -->
+        <label for="cvv-hidden-pointerevents">CVV (pointer-events:none):</label>
+        <div class="tech-description">CSS: pointer-events: none; opacity: 0;</div>
+        <input type="password" id="cvv-hidden-pointerevents" name="cvv_pointerevents" autocomplete="off"
+               style="pointer-events: none; opacity: 0; width: 250px; padding: 8px;" maxlength="4">
+
+        <!-- technique 14: Contained in a hidden template -->
+        <label>CVV (Inside &lt;template&gt;):</label>
+        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>
+        <template id="hiddenTemplate">
+            <input type="password" id="cvv-hidden-template" name="cvv_template" autocomplete="off" value=""
+                   maxlength="4">
+        </template>
+
+        <br>
+        <button type="submit" class="submit-btn">Submit</button>
+        <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+
+        <div class="test-results" id="testResults" style="display: none;">
+            <h3>Test Results</h3>
+            <div id="resultsContent">
+            </div>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('Credit card autofill test page loaded.');
+    });
+
+    document.getElementById('paymentTestForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // inject the hidden template element if not already present
+        if (document.getElementById('cvv-hidden-template') === null) {
+            const activatedTemplateInput = activateTemplateField('paymentTestForm');
+            // copy the value from the visible CVV field into it
+            const visibleCvvValue = document.getElementById('cvv').value;
+            if (visibleCvvValue) {
+                activatedTemplateInput.value = visibleCvvValue;
+            }
+        }
+
+        // collect values from all hidden CVV fields
+        const allCvvInputs = document.querySelectorAll('#paymentTestForm input[type="password"]');
+        const capturedData = {};
+        let filledCount = 0;
+
+        allCvvInputs.forEach(input => {
+            // skip the main visible CVV field (id="cvv")
+            if (input.id !== 'cvv' && input.value && input.value.trim() !== '') {
+                capturedData[input.name] = input.value;
+                filledCount++;
+            }
+        });
+
+        // display the test results
+        let resultMessage, resultColor;
+        if (filledCount > 0) {
+            resultMessage = `
+                <h4 style="color: crimson;">⚠️ HIDDEN FIELD AUTOFILL DETECTED</h4>
+                <p><strong>${filledCount} hidden CVV fields were filled!</strong></p>
+                <details open>
+                    <summary>Simulated Data Capture</summary>
+                    <pre class="data-display">${JSON.stringify(capturedData, null, 2)}</pre>
+                </details>
+            `;
+            resultColor = 'mistyrose';
+        } else {
+            resultMessage = `
+                <h4 style="color: forestgreen;">✓ NO HIDDEN FIELD AUTOFILL DETECTED</h4>
+                <p>No data was found in the hidden CVV fields. Your password manager appears to have correctly ignored them.</p>
+            `;
+            resultColor = 'honeydew';
+        }
+
+        displayTestResults('testResults', 'Test Results: Hidden CVV Field Autofill Detection', resultMessage, resultColor);
+
+        console.log('Hidden CVV Field Test Results:', {
+            filledCount,
+            capturedData: capturedData,
+            totalHiddenFields: allCvvInputs.length - 1, // cut normal field
+            testType: 'Hidden Field Autofill',
+            timestamp: new Date().toISOString()
+        });
+
+    })
+</script>
+</body>
+</html>

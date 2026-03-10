@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Personal Information Form - Hidden Field Test</title>
+    <link rel="stylesheet" href="/common.css">
+    <script src="/common.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <header class="page-header">
+        <h1>Personal Information Form</h1>
+        <p class="page-description"><em>This page contains a personal information form with hidden fields
+            using various techniques to test password manager autofill behavior.</em></p>
+    </header>
+
+    <form id="personalInfoTestForm" method="POST">
+        <!-- normal visible field -->
+        <label for="address">Address (Visible):</label>
+        <input class="visible-field" type="text" id="address" name="address" autocomplete="street-address"
+               placeholder="Enter your street address">
+
+        <!-- hidden address fields -->
+
+        <h3>Hidden Address Fields</h3>
+
+        <!-- technique 1: display: none -->
+        <label for="addr-hidden-display">Address (display:none):</label>
+        <div class="tech-description">CSS: display: none;</div>
+        <input type="text" id="addr-hidden-display" name="addr_display" autocomplete="off" style="display: none;">
+
+        <!-- technique 2: visibility: hidden -->
+        <label for="addr-hidden-visibility" style="visibility: hidden;">Address (visibility:hidden):</label>
+        <div class="tech-description">CSS: visibility: hidden;</div>
+        <input type="text" id="addr-hidden-visibility" name="addr_visibility" autocomplete="off"
+               style="visibility: hidden;">
+
+        <!-- technique 3: HTML hidden attribute -->
+        <label for="addr-hidden-attr" hidden>Address (HTML hidden):</label>
+        <div class="tech-description">Attribute: hidden</div>
+        <input type="text" id="addr-hidden-attr" name="addr_hidden" autocomplete="off" hidden>
+
+        <!-- technique 4: opacity: 0 -->
+        <label for="addr-hidden-opacity">Address (opacity:0):</label>
+        <div class="tech-description">CSS: opacity: 0;</div>
+        <input type="text" id="addr-hidden-opacity" name="addr_opacity" autocomplete="off"
+               style="opacity: 0; width: 250px; padding: 8px;">
+
+        <!-- technique 5: off-screen -->
+        <label for="addr-hidden-offscreen">Address (Off-screen):</label>
+        <div class="tech-description">CSS: position: absolute; left: -9999px;</div>
+        <input type="text" id="addr-hidden-offscreen" name="addr_offscreen" autocomplete="off"
+               style="position: absolute; left: -9999px;">
+
+        <!-- technique 6: ancestor element overflow: hidden -->
+        <div style="width: 0; height: 0; overflow: hidden; margin-top: 20px;">
+            <label for="addr-hidden-ancestor-overflow">Address (Ancestor overflow):</label>
+            <div class="tech-description">Parent div with width:0; height:0; overflow:hidden</div>
+            <input type="text" id="addr-hidden-ancestor-overflow" name="addr_ancestor_overflow" autocomplete="off">
+        </div>
+
+        <!-- technique 7: CSS clip-path -->
+        <label for="addr-hidden-clip-path">Address (CSS clip-path):</label>
+        <div class="tech-description">CSS: clip-path: inset(100%);</div>
+        <input type="text" id="addr-hidden-clip-path" name="addr_clip_path" autocomplete="off"
+               class="hidden-clip-path">
+
+        <!-- technique 8: transform: scale(0) -->
+        <label for="addr-hidden-transform">Address (transform:scale(0)):</label>
+        <div class="tech-description">CSS: transform: scale(0);</div>
+        <input type="text" id="addr-hidden-transform" name="addr_transform" autocomplete="off"
+               style="transform: scale(0);">
+
+        <!-- technique 9: font-size: 0 -->
+        <label for="addr-hidden-fontsize">Address (font-size:0):</label>
+        <div class="tech-description">CSS: font-size: 0; width/height: 0;</div>
+        <input type="text" id="addr-hidden-fontsize" name="addr_fontsize" autocomplete="off"
+               style="font-size: 0; width: 0; height: 0; border: none; padding: 0;">
+
+        <!-- technique 10: content-visibility -->
+        <label for="addr-hidden-content-vis">Address (content-visibility):</label>
+        <div class="tech-description">CSS: content-visibility: hidden;</div>
+        <input type="text" id="addr-hidden-content-vis" name="addr_content_vis" autocomplete="off"
+               class="hidden-content-visibility" style="border: none;">
+
+        <!-- technique 11: tiny size: 1px -->
+        <label for="addr-hidden-tiny">Address (Tiny size 1px):</label>
+        <div class="tech-description">CSS: width: 1px; height: 1px;</div>
+        <input type="text" id="addr-hidden-tiny" name="addr_tiny" autocomplete="off"
+               style="width: 1px; height: 1px; opacity: 0.01;">
+
+        <!-- technique 12: z-index (behind overlay) -->
+        <label for="addr-hidden-zindex">Address (z-index behind):</label>
+        <div class="tech-description">Positioned absolutely with negative z-index behind a solid div.</div>
+        <div style="position: absolute; top: 0; left: 0; width: 250px; height: 40px; background: white; z-index: 1;"></div>
+        <input type="text" id="addr-hidden-zindex" name="addr_zindex" autocomplete="off"
+               style="position: absolute; top: 0; left: 0; width: 250px; padding: 8px; z-index: -1;">
+
+        <!-- technique 13: pointer-events: none -->
+        <label for="addr-hidden-pointerevents">Address (pointer-events:none):</label>
+        <div class="tech-description">CSS: pointer-events: none; opacity: 0;</div>
+        <input type="text" id="addr-hidden-pointerevents" name="addr_pointerevents" autocomplete="off"
+               style="pointer-events: none; opacity: 0; width: 250px; padding: 8px;">
+
+        <!-- technique 14: Contained in a hidden template -->
+        <label>Address (Inside &lt;template&gt;):</label>
+        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>
+        <template id="hiddenTemplate">
+            <input type="text" id="addr-hidden-template" name="addr_template" autocomplete="off" value="">
+        </template>
+
+        <br>
+        <button type="submit" class="submit-btn">Submit</button>
+        <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+
+        <div class="test-results" id="testResults" style="display: none;">
+            <h3>Test Results</h3>
+            <div id="resultsContent">
+            </div>
+        </div>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('Personal information autofill test page loaded.');
+    });
+
+    // check for data leakage
+    document.getElementById('personalInfoTestForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        // inject the hidden template element if not already present
+        if (document.getElementById('addr-hidden-template') === null) {
+            const activatedTemplateInput = activateTemplateField('personalInfoTestForm');
+            // copy the value from the visible address field into it
+            const visibleAddressValue = document.getElementById('address').value;
+            if (visibleAddressValue) {
+                activatedTemplateInput.value = visibleAddressValue;
+            }
+        }
+
+        // collect values from all hidden address fields
+        const allAddressInputs = document.querySelectorAll('#personalInfoTestForm input[type="text"]');
+        const capturedData = {};
+        let filledCount = 0;
+
+        allAddressInputs.forEach(input => {
+            // Skip the main visible address field (id="address")
+            if (input.id !== 'address' && input.value && input.value.trim() !== '') {
+                capturedData[input.name] = input.value;
+                filledCount++;
+            }
+        });
+
+        // display the test results
+        let resultMessage, resultColor;
+        if (filledCount > 0) {
+            resultMessage = `
+                <h4 style="color: crimson;">⚠️ HIDDEN FIELD AUTOFILL DETECTED</h4>
+                <p><strong>${filledCount} hidden address fields were filled!</strong></p>
+                <details open>
+                    <summary>Simulated Data Capture</summary>
+                    <pre class="data-display">${JSON.stringify(capturedData, null, 2)}</pre>
+                </details>
+            `;
+            resultColor = 'mistyrose';
+        } else {
+            resultMessage = `
+                <h4 style="color: forestgreen;">✓ NO HIDDEN FIELD AUTOFILL DETECTED</h4>
+                <p>No data was found in the hidden address fields. Your password manager appears to have correctly ignored them.</p>
+            `;
+            resultColor = 'honeydew';
+        }
+
+        displayTestResults('testResults', 'Test Results: Hidden Address Field Autofill Detection', resultMessage, resultColor);
+
+        console.log('Hidden Address Field Test Results:', {
+            filledCount,
+            capturedData: capturedData,
+            totalHiddenFields: allAddressInputs.length - 1, // cut normal field
+            testType: 'Hidden Field Autofill',
+            timestamp: new Date().toISOString()
+        });
+    });
+</script>
+</body>
+</html>

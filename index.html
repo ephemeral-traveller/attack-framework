@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Password Manager Autofill Simulated Test Pages</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, sans-serif;
+        }
+
+        body {
+            background-color: whitesmoke;
+            color: darkslategray;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid lightgray;
+        }
+
+        h1 {
+            color: darkslategray;
+            font-size: 2.2rem;
+            margin-bottom: 10px;
+        }
+
+        .description {
+            color: slategray;
+            max-width: 800px;
+            margin: 0 auto 20px;
+        }
+
+        .warning {
+            background-color: lightgoldenrodyellow;
+            border: 1px solid navajowhite;
+            color: sienna;
+            padding: 12px 20px;
+            border-radius: 6px;
+            margin: 20px auto;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .category {
+            flex: 1;
+            min-width: 300px;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 25px;
+        }
+
+        .category h2 {
+            color: cornflowerblue;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid whitesmoke;
+        }
+
+        .card-link {
+            display: block;
+            text-decoration: none;
+            color: darkslategray;
+            padding: 12px 15px;
+            background-color: whitesmoke;
+            border-left: 4px solid cornflowerblue;
+            transition: background-color 0.3s ease;
+        }
+
+        .card-link:hover {
+            background-color: aliceblue;
+        }
+
+        .card-content {
+            display: block;
+        }
+
+        .test-title {
+            font-weight: 500;
+            margin-bottom: 3px;
+            color: inherit;
+        }
+
+        .test-list {
+            list-style-type: none;
+        }
+
+        .test-list li {
+            margin-bottom: 12px;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .path {
+            font-family: 'Courier New', monospace;
+            font-size: 0.85rem;
+            color: slategray;
+            margin-top: 3px;
+        }
+
+        .add-new h3 {
+            color: slategray;
+            margin-bottom: 10px;
+        }
+
+        footer {
+            margin-top: 50px;
+            text-align: center;
+            color: darkgray;
+            font-size: 0.9rem;
+            padding-top: 20px;
+            border-top: 1px solid lightgray;
+        }
+
+        @media (max-width: 768px) {
+            .categories {
+                flex-direction: column;
+            }
+
+            .category {
+                min-width: 100%;
+            }
+
+            h1 {
+                font-size: 1.8rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Password Manager Autofill Simulated Test Pages</h1>
+    <p class="description">
+        A collection of simulated malicious pages designed to test the autofill behavior of web-based password managers.
+    </p>
+    <div class="warning">
+        <strong>⚠ WARNING:</strong> These pages are for security research purposes only.
+        Please do not enter real credentials.
+    </div>
+</header>
+
+<main>
+    <div class="categories">
+        <section class="category">
+            <h2>Hidden Attack Simulations</h2>
+            <p style="margin-bottom: 20px; color: slategray;">
+                Pages simulating hidden or disguised form elements.
+            </p>
+            <ul class="test-list">
+                <li>
+                    <a href="hidden_attacks/login.html" class="card-link">
+                        <div class="card-content">
+                            <div class="test-title">Login Form</div>
+                            <div class="path">hidden_attacks/login.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="hidden_attacks/credit_card.html" class="card-link">
+                        <div class="card-content">
+                            <div class="test-title">Credit Card Form</div>
+                            <div class="path">hidden_attacks/credit_card.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="hidden_attacks/personal_info.html" class="card-link">
+                        <div class="card-content">
+                            <div class="test-title">Personal Information Form</div>
+                            <div class="path">hidden_attacks/personal_info.html</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </section>
+
+        <section class="category">
+            <h2>Active Attack Simulations</h2>
+            <p style="margin-bottom: 20px; color: slategray;">
+                Pages simulating real-world credential harvesting scenarios.
+            </p>
+            <ul class="test-list">
+                <li>
+                    <a href="active_attacks/cross_origin.html" class="card-link">
+                        <div class="card-content">
+                            <div class="test-title">Cross-Origin</div>
+                            <div class="path">active_attacks/cross_origin.html</div>
+                        </div>
+                    </a>
+                </li>
+                <li>
+                    <a href="active_attacks/xss.html" class="card-link">
+                        <div class="card-content">
+                            <div class="test-title">XSS</div>
+                            <div class="path">active_attacks/xss.html</div>
+                        </div>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </div>
+
+</main>
+
+<footer>
+    <p>Password Manager Autofill Simulated Test Framework | For Security Research Only</p>
+    <p style="margin-top: 5px; font-size: 0.8rem;">
+        This is a simulated testing environment. No actual credentials are stored or transmitted.
+    </p>
+</footer>
+
+</body>
+</html>

