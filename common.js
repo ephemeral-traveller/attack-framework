@@ -13,6 +13,10 @@ function activateTemplateField(formId, templateId = 'hiddenTemplate') {
 }
 
 // clear form data
+function returnToIndex() {
+        window.location.href = '../index.html';
+    }
+
 function onRefresh() {
     const baseUrl = window.location.origin + window.location.pathname;
     window.location.replace(baseUrl);

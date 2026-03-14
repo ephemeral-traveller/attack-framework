@@ -91,13 +91,13 @@ label {
 }
 
 .refresh-btn {
-    background-color: lightcoral;
+    background-color: darkseagreen;
     margin-top: 10px;
     display: block;
 }
 
 .refresh-btn:hover {
-    background-color: orangered;
+    background-color: darkolivegreen;
 }
 
 .data-display {

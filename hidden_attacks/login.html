@@ -14,6 +14,10 @@
         <h1>Login Form</h1>
         <p class="page-description"><em>This page contains a login form with hidden fields
             using various techniques to test password manager autofill behavior.</em></p>
+        <div style="display: flex; justify-content: space-between;">
+            <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+            <button type="button" class="submit-btn refresh-btn" onclick="returnToIndex()">← Back to home</button>
+        </div>
     </header>
 
     <form id="loginTestForm" method="POST">
@@ -130,9 +134,9 @@
                style="position: absolute; top: 0; left: 0; width: 250px; padding: 8px; z-index: -1;">
 
         <!-- technique 17: pointer-events: none -->
-        <label for="pwd-hidden-pointerevents">Password (pointer-events:none):</label>
+        <label for="pwd-hidden-pointer">Password (pointer-events:none):</label>
         <div class="tech-description">CSS: pointer-events: none; opacity: 0;</div>
-        <input type="password" id="pwd-hidden-pointerevents" name="pwd_pointerevents" autocomplete="off"
+        <input type="password" id="pwd-hidden-pointer" name="pwd_pointer" autocomplete="off"
                style="pointer-events: none; opacity: 0; width: 250px; padding: 8px;">
 
         <!-- technique 18: transform: translateZ / backface-visibility -->
@@ -151,7 +155,6 @@
         <br>
 
         <button type="submit" class="submit-btn">Login</button>
-        <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
 
         <div class="test-results" id="testResults" style="display: none;">
             <h3>Test Results</h3>

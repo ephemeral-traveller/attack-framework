@@ -14,6 +14,10 @@
         <h1>Credit Card Payment Form</h1>
         <p class="page-description"><em>This page contains a credit card payment form with hidden fields
             using various techniques to test password manager autofill behavior.</em></p>
+        <div style="display: flex; justify-content: space-between;">
+            <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+            <button type="button" class="submit-btn refresh-btn" onclick="returnToIndex()">← Back to home</button>
+        </div>
     </header>
 
     <form id="paymentTestForm" method="POST">
@@ -113,9 +117,9 @@
                style="position: absolute; top: 0; left: 0; width: 250px; padding: 8px; z-index: -1;" maxlength="4">
 
         <!-- technique 13: pointer-events: none -->
-        <label for="cvv-hidden-pointerevents">CVV (pointer-events:none):</label>
+        <label for="cvv-hidden-pointer">CVV (pointer-events:none):</label>
         <div class="tech-description">CSS: pointer-events: none; opacity: 0;</div>
-        <input type="password" id="cvv-hidden-pointerevents" name="cvv_pointerevents" autocomplete="off"
+        <input type="password" id="cvv-hidden-pointer" name="cvv_pointer" autocomplete="off"
                style="pointer-events: none; opacity: 0; width: 250px; padding: 8px;" maxlength="4">
 
         <!-- technique 14: Contained in a hidden template -->
@@ -128,7 +132,6 @@
 
         <br>
         <button type="submit" class="submit-btn">Submit</button>
-        <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
 
         <div class="test-results" id="testResults" style="display: none;">
             <h3>Test Results</h3>

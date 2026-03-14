@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Clickjacking Autofill Test</title>
+    <link rel="stylesheet" href="../common.css">
+    <script src="../common.js"></script>
+    <style>
+
+        .iframe-test-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .iframe-container {
+            flex: 1;
+            min-width: 450px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            background: #f9f9f9;
+            box-sizing: border-box;
+        }
+
+        .login-iframe {
+            width: 100%;
+            height: 450px;
+            border: 1px solid #888;
+            display: block;
+        }
+
+        .overlay-parent {
+            position: relative;
+            display: block;
+            margin-top: 15px;
+        }
+
+        /* common style for the attack overlays */
+        .attack-overlay {
+            position: absolute;
+            width: 150px;
+            height: 40px;
+            background-color: rgba(0, 255, 0, 0.3);
+            border: 2px dashed #000;
+            z-index: 10000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: black;
+            font-weight: bold;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container">
+    <header class="page-header">
+        <h1>Clickjacking Attack Autofill Test</h1>
+        <p class="page-description"><em>This page simulates the clickjacking attack with a legitimate login form loaded
+            inside an iframe. <br> A semi-transparent overlay is positioned to trick the user into
+            clicking the iframe's "Submit" button.</em></p>
+        <div style="display: flex; justify-content: space-between;">
+            <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+            <button type="button" class="submit-btn refresh-btn" onclick="returnToIndex()">← Back to home</button>
+        </div>
+    </header>
+
+    <!-- target iframes for testing -->
+    <div class="iframe-test-row">
+        <div class="iframe-container">
+            <h3>1. Same-Origin iFrame (Legitimate Login Form)</h3>
+            <p class="page-description"><em>This iframe is served from the same origin as this page.</em></p>
+            <!-- the attacker’s overlay will be dynamically inserted into this container, positioned over the button -->
+            <div id="overlayContainer" class="overlay-parent">
+                <iframe id="loginIframeSame" src="./clickjacking_inner.html" class="login-iframe"></iframe>
+            </div>
+        </div>
+
+        <div class="iframe-container">
+            <h3>2. Cross-Origin iFrame (Simulated 3rd-party)</h3>
+            <p class="page-description"><em>This iframe simulates a login form from a different origin.</em></p>
+            <div id="overlayContainerCross" class="overlay-parent">
+                <!-- use iframe from different origin -->
+                <iframe id="loginIframeCross" class="login-iframe" src="./clickjacking_inner.html"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="test-results" id="testResults" style="display: none; margin-top: 30px;">
+        <h3>Test Results</h3>
+        <div id="resultsContent">
+        </div>
+    </div>
+
+</div>
+
+<script>
+    let overlays = {};
+
+    document.addEventListener('DOMContentLoaded', function () {
+        console.log('Clickjacking attack test page loaded.');
+        // initial creation of overlays
+        createOverlayForIframe('same');
+        createOverlayForIframe('cross');
+
+        // reposition overlays when iframes load
+        document.getElementById('loginIframeSame').addEventListener('load', () => createOverlayForIframe('same'));
+        document.getElementById('loginIframeCross').addEventListener('load', () => createOverlayForIframe('cross'));
+    });
+
+    // create or recreate the deceptive overlay for a specific iframe
+    // type: 'same' for same-origin, 'cross' for cross-origin
+    function createOverlayForIframe(type) {
+        const config = {
+            'same': {containerId: 'overlayContainer', iframeId: 'loginIframeSame', top: '370px', left: '135px'},
+            'cross': {containerId: 'overlayContainerCross', iframeId: 'loginIframeCross', top: '370px', left: '135px'}
+        };
+        const cfg = config[type];
+        if (!cfg) return;
+
+        const overlayContainer = document.getElementById(cfg.containerId);
+        if (!overlayContainer) return;
+
+        // remove existing overlay for this iframe
+        if (overlays[type]) {
+            overlays[type].remove();
+        }
+
+        // create the overlay element
+        const attackOverlay = document.createElement('div');
+        attackOverlay.className = 'attack-overlay';
+        attackOverlay.innerHTML = '✨ FREE PRIZE! ✨';
+        attackOverlay.title = 'Deceptive attacker overlay';
+        attackOverlay.style.top = cfg.top;
+        attackOverlay.style.left = cfg.left;
+
+        overlayContainer.appendChild(attackOverlay);
+        overlays[type] = attackOverlay;
+
+        // attach click event
+        attackOverlay.addEventListener('click', function () {
+            simulateAttackOnIframe(type, cfg.iframeId);
+        });
+    }
+
+    // common function to simulate the attack for any iframe
+    function simulateAttackOnIframe(iframeType, iframeId) {
+        // clear previous test results to avoid influence from the other iframe
+        const testResultsDiv = document.getElementById('testResults');
+        const resultsContentDiv = document.getElementById('resultsContent');
+        if (testResultsDiv && resultsContentDiv) {
+            // ensures only the current test result is shown
+            resultsContentDiv.innerHTML = '';
+        }
+
+        // initialize captured data
+        const capturedData = {
+            attack: 'clickjacking_simulation',
+            iframe_type: iframeType + '-origin',
+            iframe_id: iframeId,
+            timestamp: new Date().toISOString(),
+            autofilled_credentials: null
+        };
+
+        // try to capture autofilled credentials from the iframe
+        try {
+            const iframe = document.getElementById(iframeId);
+            if (iframe && iframe.contentDocument) {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+                const usernameField = iframeDoc.getElementById('username') ||
+                    iframeDoc.getElementById('innerUsername') ||
+                    iframeDoc.querySelector('input[type="email"], input[autocomplete="username"]');
+
+                const passwordField = iframeDoc.getElementById('password') ||
+                    iframeDoc.getElementById('innerPassword') ||
+                    iframeDoc.querySelector('input[type="password"], input[autocomplete="current-password"]');
+
+                let username = '';
+                let password = '';
+
+                if (usernameField) {
+                    username = usernameField.value || '';
+                }
+
+                if (passwordField) {
+                    password = passwordField.value || '';
+                }
+
+                // add autofilled credentials to captured data
+                capturedData.autofilled_credentials = {
+                    username: username,
+                    password: password,
+                    username_field_id: usernameField ? usernameField.id : 'not_found',
+                    password_field_id: passwordField ? passwordField.id : 'not_found',
+                    autofill_detected: !!(username || password)
+                };
+            } else {
+                capturedData.autofilled_credentials = {
+                    error: 'Unable to access iframe document (may be cross-origin or not loaded)',
+                    autofill_detected: false
+                };
+            }
+        } catch (error) {
+            // handle cross-origin access restrictions
+            capturedData.autofilled_credentials = {
+                error: `Cross-origin access denied: ${error.message}`,
+                autofill_detected: false
+            };
+        }
+
+        let resultMessage = `
+            <h4 style="color: crimson;text-transform: uppercase">Clickjacking Attack Simulated (${iframeType}-origin)</h4>
+
+            <div style="margin: 15px 0; padding: 10px; background-color: #f8f9fa; border-radius: 5px;">
+                <p>Username: ${capturedData.autofilled_credentials.username ? `"${capturedData.autofilled_credentials.username}"` : '<em>Not detected or empty</em>'}</p>
+                <p>Password: ${capturedData.autofilled_credentials.password ? `"${capturedData.autofilled_credentials.password}"` : '<em>Not detected or empty</em>'}</p>
+                <p>Autofill Detected: ${capturedData.autofilled_credentials.autofill_detected ? '✅ Yes' : '❌ No'}</p>
+                ${capturedData.autofilled_credentials.error ? `<p>Access Error: ${capturedData.autofilled_credentials.error}</p>` : ''}
+            </div>
+
+            <details open>
+                <summary>Simulated Data Capture</summary>
+                <pre class="data-display">${JSON.stringify(capturedData, null, 2)}</pre>
+            </details>
+        `;
+        displayTestResults('testResults', 'Test Results: Clickjacking Autofill Detection', resultMessage, 'mistyrose');
+    }
+</script>
+</body>
+</html>

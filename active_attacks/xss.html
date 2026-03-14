@@ -14,6 +14,10 @@
         <h1>XSS Attack Autofill Test</h1>
         <p class="page-description"><em>This page simulates XSS attack to test password manager
             autofill behavior when form submission targets a different domain.</em></p>
+        <div style="display: flex; justify-content: space-between;">
+            <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
+            <button type="button" class="submit-btn refresh-btn" onclick="returnToIndex()">← Back to home</button>
+        </div>
     </header>
 
     <!-- vulnerable search form that reflects input without sanitization -->
@@ -35,7 +39,6 @@
             <input type="hidden" name="vulnerable" value="true">
 
             <button type="submit" class="submit-btn">Search</button>
-            <button type="button" class="submit-btn refresh-btn" onclick="onRefresh()">Refresh</button>
         </form>
     </div>
 
@@ -95,7 +98,7 @@
         // run autofill detection test
         runAutofillTest(searchQuery, secureTerm);
 
-        console.log('XSS test form submitted:', { searchQuery, secureTerm });
+        console.log('XSS test form submitted:', {searchQuery, secureTerm});
     });
 
     // function to reflect user inputs (simulating XSS vulnerability)
@@ -124,7 +127,6 @@
     function runAutofillTest(searchQuery, secureTerm) {
         const searchQueryFilled = searchQuery && searchQuery.trim() !== '';
         const secureTermFilled = secureTerm && secureTerm.trim() !== '';
-        const anyFieldFilled = searchQueryFilled || secureTermFilled;
 
         const capturedData = {
             searchQuery: searchQueryFilled,
@@ -134,7 +136,7 @@
         let resultMessage;
         let resultColor;
 
-        if (anyFieldFilled) {
+        if (secureTermFilled) {
             resultMessage = `
                 <h4 style="color: crimson;">⚠️ XSS ATTACK AUTOFILL DETECTED</h4>
                 <p>Your data was entered into a form that reflects input unsafely!</p>

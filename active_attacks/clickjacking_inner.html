@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Inner Login Form</title>
+    <link rel="stylesheet" href="../common.css">
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+<body>
+<div class="form-container" style="margin: 0 auto">
+    <header class="page-header">
+        <h3>Login (iFrame)</h3>
+        <p class="page-description"><em>This is a legitimate login form, loaded in an iframe.</em></p>
+    </header>
+    <form id="loginForm">
+        <label for="username">Username / Email:</label>
+        <input class="visible-field" type="text" id="username" name="username" autocomplete="username"
+               placeholder="Enter your username">
+
+        <label for="password">Password (Visible):</label>
+        <input class="visible-field" type="password" id="password" name="password" autocomplete="current-password"
+               placeholder="Your visible password">
+        <button type="submit" class="submit-btn" onclick="onConfirmClick()">Login</button>
+    </form>
+</div>
+
+<script>
+    function onConfirmClick() {
+        alert('Clicked legitimate submit');
+    }
+</script>
+</body>
+</html>
