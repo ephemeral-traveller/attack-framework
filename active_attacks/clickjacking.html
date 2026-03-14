@@ -82,7 +82,7 @@
             <p class="page-description"><em>This iframe simulates a login form from a different origin.</em></p>
             <div id="overlayContainerCross" class="overlay-parent">
                 <!-- use iframe from different origin -->
-                <iframe id="loginIframeCross" class="login-iframe" src="./clickjacking_inner.html"></iframe>
+                <iframe id="loginIframeCross" class="login-iframe" src="https://ephemeral-traveller.github.io/attack_framework_iframe/clickjacking_inner.html"></iframe>
             </div>
         </div>
     </div>
@@ -225,7 +225,7 @@
                 <pre class="data-display">${JSON.stringify(capturedData, null, 2)}</pre>
             </details>
         `;
-        displayTestResults('testResults', 'Test Results: Clickjacking Autofill Detection', resultMessage, 'mistyrose');
+        displayTestResults('testResults', 'Test Results: Clickjacking Autofill Detection', resultMessage, 'honeydew');
     }
 </script>
 </body>
