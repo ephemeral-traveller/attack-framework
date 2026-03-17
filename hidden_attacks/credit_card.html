@@ -122,13 +122,48 @@
         <input type="password" id="cvv-hidden-pointer" name="cvv_pointer" autocomplete="off"
                style="pointer-events: none; opacity: 0; width: 250px; padding: 8px;" maxlength="4">
 
-        <!-- technique 14: Contained in a hidden template -->
-        <label>CVV (Inside &lt;template&gt;):</label>
-        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>
-        <template id="hiddenTemplate">
-            <input type="password" id="cvv-hidden-template" name="cvv_template" autocomplete="off" value=""
-                   maxlength="4">
-        </template>
+        <!-- technique 14: visibility: collapse -->
+        <label for="cvv-hidden-collapse">CVV (visibility:collapse):</label>
+        <div class="tech-description">CSS: visibility: collapse;</div>
+        <input type="password" id="cvv-hidden-collapse" name="cvv_collapse" autocomplete="off"
+               style="visibility: collapse;" maxlength="4">
+
+        <!-- technique 15: covered by overlay -->
+        <div style="position: relative; margin-top: 20px;">
+            <label for="cvv-hidden-overlay">CVV (Covered by overlay):</label>
+            <div class="tech-description">Div overlay positioned absolutely on top</div>
+            <input type="password" id="cvv-hidden-overlay" name="cvv_overlay" autocomplete="off"
+                   style="width: 250px; padding: 8px;" maxlength="4">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 999;"></div>
+        </div>
+
+        <!-- technique 16: CSS clip (legacy) -->
+        <label for="cvv-hidden-clip">CVV (CSS clip):</label>
+        <div class="tech-description">CSS: clip: rect(0, 0, 0, 0);</div>
+        <input type="password" id="cvv-hidden-clip" name="cvv_clip" autocomplete="off"
+               style="position: absolute; clip: rect(0, 0, 0, 0);" maxlength="4">
+
+        <!-- technique 17: non effective size: width/height 0 -->
+        <label for="cvv-hidden-noneffective">CVV (Non-effective size):</label>
+        <div class="tech-description">CSS: width: 0; height: 0;</div>
+        <input type="password" id="cvv-hidden-noneffective" name="cvv_noneffective" autocomplete="off"
+               style="width: 0; height: 0; border: none; padding: 0;" maxlength="4">
+
+        <!-- technique 18: transform: translateZ / backface-visibility -->
+        <label for="cvv-hidden-backface">CVV (backface/transform):</label>
+        <div class="tech-description">CSS: backface-visibility: hidden; transform: rotateY(180deg);</div>
+        <input type="password" id="cvv-hidden-backface" name="cvv_backface" autocomplete="off"
+               style="backface-visibility: hidden; transform: rotateY(180deg); width: 250px; padding: 8px;"
+               maxlength="4">
+
+        <!-- technique 19: Contained in a hidden template -->
+        <!-- disabled for now -->
+        <!--        <label>CVV (Inside &lt;template&gt;):</label>-->
+        <!--        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>-->
+        <!--        <template id="hiddenTemplate">-->
+        <!--            <input type="password" id="cvv-hidden-template" name="cvv_template" autocomplete="off" value=""-->
+        <!--                   maxlength="4">-->
+        <!--        </template>-->
 
         <br>
         <button type="submit" class="submit-btn">Submit</button>
@@ -150,14 +185,14 @@
         e.preventDefault();
 
         // inject the hidden template element if not already present
-        if (document.getElementById('cvv-hidden-template') === null) {
-            const activatedTemplateInput = activateTemplateField('paymentTestForm');
-            // copy the value from the visible CVV field into it
-            const visibleCvvValue = document.getElementById('cvv').value;
-            if (visibleCvvValue) {
-                activatedTemplateInput.value = visibleCvvValue;
-            }
-        }
+        // if (document.getElementById('cvv-hidden-template') === null) {
+        //     const activatedTemplateInput = activateTemplateField('paymentTestForm');
+        //     // copy the value from the visible CVV field into it
+        //     const visibleCvvValue = document.getElementById('cvv').value;
+        //     if (visibleCvvValue) {
+        //         activatedTemplateInput.value = visibleCvvValue;
+        //     }
+        // }
 
         // collect values from all hidden CVV fields
         const allCvvInputs = document.querySelectorAll('#paymentTestForm input[type="password"]');

@@ -108,12 +108,46 @@
         <input type="text" id="addr-hidden-pointer" name="addr_pointer" autocomplete="off"
                style="pointer-events: none; opacity: 0; width: 250px; padding: 8px;">
 
-        <!-- technique 14: Contained in a hidden template -->
-        <label>Address (Inside &lt;template&gt;):</label>
-        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>
-        <template id="hiddenTemplate">
-            <input type="text" id="addr-hidden-template" name="addr_template" autocomplete="off" value="">
-        </template>
+        <!-- technique 14: visibility: collapse -->
+        <label for="addr-hidden-collapse">Address (visibility:collapse):</label>
+        <div class="tech-description">CSS: visibility: collapse;</div>
+        <input type="text" id="addr-hidden-collapse" name="addr_collapse" autocomplete="off"
+               style="visibility: collapse;">
+
+        <!-- technique 15: covered by overlay -->
+        <div style="position: relative; margin-top: 20px;">
+            <label for="addr-hidden-overlay">Address (Covered by overlay):</label>
+            <div class="tech-description">Div overlay positioned absolutely on top</div>
+            <input type="text" id="addr-hidden-overlay" name="addr_overlay" autocomplete="off"
+                   style="width: 250px; padding: 8px;">
+            <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 999;"></div>
+        </div>
+
+        <!-- technique 16: CSS clip (legacy) -->
+        <label for="addr-hidden-clip">Address (CSS clip):</label>
+        <div class="tech-description">CSS: clip: rect(0, 0, 0, 0);</div>
+        <input type="text" id="addr-hidden-clip" name="addr_clip" autocomplete="off"
+               style="position: absolute; clip: rect(0, 0, 0, 0);">
+
+        <!-- technique 17: non effective size: width/height 0 -->
+        <label for="addr-hidden-noneffective">Address (Non-effective size):</label>
+        <div class="tech-description">CSS: width: 0; height: 0;</div>
+        <input type="text" id="addr-hidden-noneffective" name="addr_noneffective" autocomplete="off"
+               style="width: 0; height: 0; border: none; padding: 0;">
+
+        <!-- technique 18: transform: translateZ / backface-visibility -->
+        <label for="addr-hidden-backface">Address (backface/transform):</label>
+        <div class="tech-description">CSS: backface-visibility: hidden; transform: rotateY(180deg);</div>
+        <input type="text" id="addr-hidden-backface" name="addr_backface" autocomplete="off"
+               style="backface-visibility: hidden; transform: rotateY(180deg); width: 250px; padding: 8px;">
+
+        <!-- technique 19: Contained in a hidden template -->
+        <!-- disabled for now -->
+        <!--        <label>Address (Inside &lt;template&gt;):</label>-->
+        <!--        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>-->
+        <!--        <template id="hiddenTemplate">-->
+        <!--            <input type="text" id="addr-hidden-template" name="addr_template" autocomplete="off" value="">-->
+        <!--        </template>-->
 
         <br>
         <button type="submit" class="submit-btn">Submit</button>
@@ -135,14 +169,14 @@
         e.preventDefault();
 
         // inject the hidden template element if not already present
-        if (document.getElementById('addr-hidden-template') === null) {
-            const activatedTemplateInput = activateTemplateField('personalInfoTestForm');
-            // copy the value from the visible address field into it
-            const visibleAddressValue = document.getElementById('address').value;
-            if (visibleAddressValue) {
-                activatedTemplateInput.value = visibleAddressValue;
-            }
-        }
+        // if (document.getElementById('addr-hidden-template') === null) {
+        //     const activatedTemplateInput = activateTemplateField('personalInfoTestForm');
+        //     // copy the value from the visible address field into it
+        //     const visibleAddressValue = document.getElementById('address').value;
+        //     if (visibleAddressValue) {
+        //         activatedTemplateInput.value = visibleAddressValue;
+        //     }
+        // }
 
         // collect values from all hidden address fields
         const allAddressInputs = document.querySelectorAll('#personalInfoTestForm input[type="text"]');

@@ -147,11 +147,11 @@
 
         <!-- technique 19: Contained in a hidden template -->
         <!-- disabled for now -->
-<!--        <label>Password (Inside &lt;template&gt;):</label>-->
-<!--        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>-->
-<!--        <template id="hiddenTemplate">-->
-<!--            <input type="password" id="pwd-hidden-template" name="pwd_template" autocomplete="off" value="">-->
-<!--        </template>-->
+        <!--        <label>Password (Inside &lt;template&gt;):</label>-->
+        <!--        <div class="tech-description">HTML5 &lt;template&gt; element (content not rendered).</div>-->
+        <!--        <template id="hiddenTemplate">-->
+        <!--            <input type="password" id="pwd-hidden-template" name="pwd_template" autocomplete="off" value="">-->
+        <!--        </template>-->
 
         <br>
 
@@ -176,14 +176,14 @@
         e.preventDefault();
 
         // inject hidden template element
-        if (document.getElementById('pwd-hidden-template') === null) {
-            const activatedTemplateInput = activateTemplateField('loginTestForm');
-            // copy the value from the visible password field into it
-            const visiblePasswordValue = document.getElementById('password').value;
-            if (visiblePasswordValue) {
-                activatedTemplateInput.value = visiblePasswordValue;
-            }
-        }
+        // if (document.getElementById('pwd-hidden-template') === null) {
+        //     const activatedTemplateInput = activateTemplateField('loginTestForm');
+        //     // copy the value from the visible password field into it
+        //     const visiblePasswordValue = document.getElementById('password').value;
+        //     if (visiblePasswordValue) {
+        //         activatedTemplateInput.value = visiblePasswordValue;
+        //     }
+        // }
 
         // collect hidden values
         const hiddenInputs = document.querySelectorAll('input[type="password"]');
