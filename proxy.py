@@ -4,7 +4,7 @@ from mitmproxy import http
 
 
 def request(flow: http.HTTPFlow) -> None:
-    logging.log(1, f"Request: {flow.request.host}")
+    logging.log(logging.INFO, f"Request: {flow.request.host}")
 
 
 def response(flow: http.HTTPFlow) -> None:
